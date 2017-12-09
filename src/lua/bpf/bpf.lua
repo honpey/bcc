@@ -1048,6 +1048,7 @@ end
 
 local function compile(prog, params)
 	-- Create code emitter sandbox, include caller locals
+	print("Begin compile...")
 	local env = { pkt=proto.pkt, BPF=BPF, ffi=ffi }
 	-- Include upvalues up to 4 nested scopes back
 	-- the narrower scope overrides broader scope
@@ -1201,6 +1202,7 @@ local function trace_bpf(ptype, pname, pdef, retprobe, prog, pid, cpu, group_fd)
 	if type(prog) ~= 'table' then
 		prog = compile(prog, {proto.pt_regs})
 	end
+	print("Helll-------------")
 	local prog_fd, err, log = S.bpf_prog_load(S.c.BPF_PROG.KPROBE, prog.insn, prog.pc)
 	assert(prog_fd, tostring(err)..': '..tostring(log))
 	-- Open tracepoint and attach
@@ -1259,6 +1261,7 @@ return setmetatable({
 		}, bpf_map_mt)
 		return map
 	end,
+	--- how to get link
 	socket = function (sock, prog)
 		-- Expect socket type, if sock is string then assume it's
 		-- an interface name (e.g. 'lo'), if it's a number then typecast it as a socket
@@ -1294,9 +1297,11 @@ return setmetatable({
 		return probe
 	end,
 	kprobe = function(tp, prog, retprobe, pid, cpu, group_fd)
+		print("Enter kprobe")
 		assert(trace_check_enabled())
 		-- Open tracepoint and attach
 		local pname, pdef = tp:match('([^:]+):(.+)')
+		print("Enter kprobe")
 		return trace_bpf('kprobe', pname, pdef, retprobe, prog, pid, cpu, group_fd)
 	end,
 	uprobe = function(tp, prog, retprobe, pid, cpu, group_fd)

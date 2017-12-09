@@ -23,7 +23,7 @@ local shr, band = bit.rshift, bit.band
 -- Thanks to LJ, we get code in portable bytecode with constants folded, basic
 -- virtual registers allocated etc.
 -- No SSA IR, type inference or advanced optimizations because the code wasn't traced yet.
-local function decode_ins(func, pc)
+local function decode_ins(func, pc) -- 首先是把luajit语言，换成luajit的bytecode，然后从luajit的bytecode转bpf
 	local ins, m = jutil.funcbc(func, pc)
 	if not ins then return nil end
 	local op, ma, mb, mc = band(ins, 0xff), band(m, 7), band(m, 15*8), band(m, 15*128)

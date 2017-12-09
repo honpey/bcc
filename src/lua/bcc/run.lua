@@ -53,6 +53,7 @@ return function()
 
   local tracefile = table.remove(arg, 1)
   if not tracefile then print_usage() end
+  print("tracefile:", tracefile)
 
   local BPF = require("bcc.bpf")
   BPF.script_root(tracefile)
@@ -64,8 +65,11 @@ return function()
     USDT = USDT,
   }
 
+  print("Pre: ")
   local command = dofile(tracefile)
-  local res, err = xpcall(command, debug.traceback, BPF, utils)
+--  local res, err = xpcall(command, debug.traceback, BPF, utils)
+	local res, err = xpcall(command, debug.traceback)
+	print("Pos ")
 
   if not res and err ~= "interrupted!" then
     io.stderr:write("[ERROR] "..err.."\n")
@@ -73,5 +77,6 @@ return function()
 
   BPF.cleanup()
   USDT.cleanup()
-  return res, err
+  return nil, nil
+---  return res, err
 end

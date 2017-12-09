@@ -1,0 +1,3 @@
+cd /home/hon/bcc/examples/lua
+sudo /home/hon/bcc/src/lua/bcc-probe ./test.lua
+cd -

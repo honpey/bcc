@@ -19,7 +19,7 @@ limitations under the License.
 -- Rewrite of https://github.com/torvalds/linux/blob/master/samples/bpf/sock_example.c
 local ffi = require("ffi")
 local bpf = require("bpf")
-local S = require("syscall")
+---local S = require("syscall")
 
 -- Shared part of the program
 local map = bpf.map('hash', 256)
@@ -34,5 +34,5 @@ for _ = 1, 10 do
    local icmp, udp, tcp = map[1], map[17], map[6]
    print(string.format('TCP %d UDP %d ICMP %d packets',
    	     tonumber(tcp or 0), tonumber(udp or 0), tonumber(icmp or 0)))
-   S.sleep(1)
+---	S.sleep(1)
 end

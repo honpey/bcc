@@ -5,6 +5,7 @@ source = {
 }
 description = {
    summary = "BCC - LuaJIT to BPF compiler.",
+
    detailed = [[
    ]],
    homepage = "https://github.com/iovisor/bcc",
